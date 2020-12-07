@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+		"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+	<!-- 这里是开发者模式，以后需要false -->
+	<!-- <constant name="struts.devMode" value="true"></constant> -->
+	<!-- 配置国际化资源文件的参数 ,这个属性在default。properties中可以找到 -->
+	<constant name="struts.custom.i18n.resources"
+			  value="com.hzl.resource.msg com.hzl/resource/msg"/>
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<package name="root2" extends="struts-default"
+			 namespace="/pict">
+		<global-results>
+			<result name="error">/error.jsp</result>
+		</global-results>
+		<!-- 配置跳转页面 -->
+		<action name="homePage" class="i18nAction" method="changeLocale">
+			<result name="success">../navigate.jsp</result>
+			<result name="input">../login.jsp</result>
+			<result name="error">../login.jsp</result>
+		</action>
+		<!-- 注册页面的访问 -->
+		<action name="RegisterPage" class="i18nAction"
+				method="changeLocale">
+			<result name="success">/regist.jsp</result>
+		</action>
+
+		<!-- 登录页面的访问 -->
+		<action name="LoginPage" class="i18nAction"
+				method="changeLocale">
+			<result name="success">/login.jsp</result>
+		</action>
+		<!-- 用户登陆action -->
+		<action name="login" class="userAction"
+				method="login">
+			<result name="success" type="redirectAction">
+				<param name="namespace">/pict</param>
+				<param name="actionName">homePage</param>
+			</result>
+			<result name="input">
+				../login.jsp
+			</result>
+			<result name="error">../error.jsp</result>
+		</action>
+
+		<action name="ajax" class="userAction"
+				method="excuteAjax">
+		</action>
+
+		<action name="ajaxImage"
+				class="createImageAction" method="executeAjax">
+		</action>
+		<!-- 产生验证码action -->
+		<action name="draw" class="createImageAction"
+				method="draw">
+			<result name="success" type="stream">
+				<param name="contentType">image/jpeg</param>
+				<param name="inputName">inputStream</param>
+			</result>
+		</action>
+
+		<!-- 用户注册action -->
+		<action name="regist" class="userAction"
+				method="regist">
+			<result name="success" type="redirectAction">
+				<param name="namespace">/pict</param>
+				<param name="actionName">homePage</param>
+			</result>
+			<result name="input">/regist.jsp</result>
+		</action>
+
+		<!-- 地图页面的访问 -->
+		<action name="mapPage" class="poiAction"
+				method="enterArc">
+			<result name="success">/ArcMap.jsp</result>
+		</action>
+
+		<!-- 相册页面的访问 -->
+		<action name="ImagePage" class="poiAction"
+				method="enterImage">
+			<result name="success">/bookPic.jsp</result>
+		</action>
+	</package>
+	<package name="root" extends="struts-default" namespace="/">
+		<action name="ajax_*_*" class="{1}Action" method="ajax_{2}"> <!-- 1:showAllPoi方法 -->
+		</action>
+	</package>
+
+
+</struts>	
